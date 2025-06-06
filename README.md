@@ -4,7 +4,9 @@
 
 Welcome to my personal macOS terminal setup - where productivity meets fun, and every command feels like magic ✨
 
-![Terminal Demo](https://user-images.githubusercontent.com/yourusername/terminal-demo.gif)
+**🎯 What makes this different?** Most dotfiles just dump configs on you and say "good luck!" This repo **teaches you** while you use it. Interactive tutorials, explanations for everything, and genuine fun built right in.
+
+![Terminal Demo](https://user-images.githubusercontent.com/pibulus/terminal-demo.gif)
 *↑ This is what you're getting (GIF coming soon)*
 
 ## 🎯 What's This All About?
@@ -15,7 +17,7 @@ I got tired of the default Terminal.app looking like it's from 1984, so I built 
 
 ```bash
 # Clone this bad boy
-git clone https://github.com/pibulus/mac-terminal-paradise.git ~/dotfiles
+git clone https://github.com/pibulus/dotfiles.git ~/dotfiles
 
 # Run the magic installer
 cd ~/dotfiles && ./install.sh
@@ -25,19 +27,25 @@ cd ~/dotfiles && ./install.sh
 
 ## 🎮 What You Get
 
-### The Cool Stuff
+### 🎨 The Cool Stuff
 - **Ghostty Terminal** - Press `Cmd+`\` from ANYWHERE to summon it (game changer!)
 - **Beautiful Shell** - With icons, colors, and git info that doesn't suck
-- **50+ Modern Tools** - Because `ls` is boring when you can have `eza` with icons
+- **138 Modern Tools** - Because `ls` is boring when you can have `eza` with icons
 - **Interactive Cheat Menu** - Type `cheat` and never forget a command again
 - **ASCII Aquarium** - Because why not? 🐠
 
-### The Productive Stuff
+### 🚀 The Productive Stuff
 - **Smart Navigation** - Type `z proj` to jump to your projects folder
-- **Git Superpowers** - `lazygit` for visual git, custom shortcuts for speed
+- **Git Worktree Mastery** - Work on multiple branches simultaneously (mind = blown)
+- **Visual Git UI** - `lazygit` makes git actually enjoyable
 - **Fuzzy Everything** - Find files, commands, directories with fuzzy search
 - **Custom Keybindings** - `Ctrl+F` to find & edit files, `Ctrl+G` for git status
-- **Svelte Optimized** - Aliases and tools specifically for web dev
+
+### 🧠 The Learning Stuff (This is the magic!)
+- **Interactive tutorials** - Learn by doing, not reading docs
+- **Explanations for everything** - Why this tool? How does it help?
+- **Progressive discovery** - Start simple, unlock advanced features
+- **No more "RTFM"** - The manual comes to you!
 
 ## 🛠️ The Stack
 
@@ -96,10 +104,11 @@ A: Faster than your current setup, guaranteed.
 
 ## 🎯 Pro Tips
 
-1. **Quick Terminal**: `Cmd+`\` is life-changing. Use it.
+1. **Quick Terminal**: `Cmd+`\` is life-changing. Use it from any app.
 2. **Navigation**: Forget `cd`. Use `z` and thank me later.
-3. **Git**: Just type `lazygit`. Trust me.
-4. **Fun Break**: Try `cmatrix` or `asciiquarium`
+3. **Git Workflows**: Master worktrees - never stash again!
+4. **Learning Mode**: Type `cheat` whenever you're stuck
+5. **Fun Break**: Try `cmatrix`, `asciiquarium`, or `fortune | cowsay | lolcat`
 
 ## 📸 Screenshots
 
@@ -130,6 +139,6 @@ MIT - Do whatever you want with it!
 
 *If this made your terminal awesome, throw a ⭐ on the repo!*
 
-**[Download](https://github.com/pibulus/dotfiles/archive/main.zip)** • **[Issues](https://github.com/pibulus/dotfiles/issues)** • **[My Website](https://yoursite.com)**
+**[Download](https://github.com/pibulus/dotfiles/archive/main.zip)** • **[Issues](https://github.com/pibulus/dotfiles/issues)** • **[Star it!](https://github.com/pibulus/dotfiles)**
 
 </div>
