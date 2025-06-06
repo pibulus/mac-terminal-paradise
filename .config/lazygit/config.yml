@@ -1,0 +1,43 @@
+# Pablo's Lazygit Config
+gui:
+  # Theme
+  theme:
+    activeBorderColor:
+      - '#a89984'
+      - bold
+    inactiveBorderColor:
+      - '#3c3836'
+    selectedLineBgColor:
+      - '#4b4b4b'
+    selectedRangeBgColor:
+      - '#4b4b4b'
+  
+  # Show icons
+  showIcons: true
+  
+  # Show file tree by default
+  showFileTree: true
+  
+  # Side panel width
+  sidePanelWidth: 0.3333
+
+# Custom keybindings
+keybinding:
+  universal:
+    quit: 'q'
+    quit-alt1: '<c-c>'
+    return: '<esc>'
+    
+  files:
+    commitChanges: 'c'
+    stashAllChanges: 's'
+    
+  commits:
+    cherryPickCopy: 'c'
+    pasteCommits: 'v'
+
+# Git settings
+git:
+  paging:
+    colorArg: always
+    pager: delta --dark --paging=never

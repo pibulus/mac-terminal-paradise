@@ -1,0 +1,758 @@
+#!/bin/bash
+# Pablo's Ultimate Interactive Terminal Cheatsheet
+# Save this as ~/bin/cheat and chmod +x it
+
+# Colors
+CYAN='\033[0;36m'
+YELLOW='\033[1;33m'
+GREEN='\033[0;32m'
+PURPLE='\033[0;35m'
+RED='\033[0;31m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Track if user is new
+FIRST_RUN_FILE="$HOME/.cheat_welcomed"
+
+# Welcome screen for first run
+show_welcome() {
+    if [ ! -f "$FIRST_RUN_FILE" ]; then
+        clear
+        echo -e "${CYAN}"
+        figlet "Welcome!" | lolcat
+        echo -e "${NC}"
+        
+        gum style \
+            --border double \
+            --border-foreground 212 \
+            --padding "1 2" \
+            --margin "1" \
+            --align center \
+            "🎉 WELCOME TO YOUR TERMINAL SUPERPOWER GUIDE! 🎉
+
+This interactive guide will teach you everything about
+your amazing terminal setup. Let's start with a quick tour!"
+        
+        echo ""
+        if gum confirm "Ready for the tour?"; then
+            show_quick_tour
+        fi
+        touch "$FIRST_RUN_FILE"
+    fi
+}
+
+# Quick tour for new users
+show_quick_tour() {
+    clear
+    gum style \
+        --border rounded \
+        --border-foreground 99 \
+        --padding "1 2" \
+        "🚀 QUICK TOUR - 5 ESSENTIAL COMMANDS
+
+1. z [folder] → Jump to ANY folder instantly
+   Try: z down → Goes to Downloads!
+
+2. Cmd+\` → Summon terminal from ANYWHERE
+   This is your new superpower!
+
+3. lazygit → Visual git (in any git folder)
+   Never type git commands again!
+
+4. fzf → Find ANYTHING instantly
+   Ctrl+R for history, Ctrl+T for files
+
+5. btop → Beautiful system monitor
+   Press 'p' to change themes!"
+    
+    echo ""
+    gum input --placeholder "Press enter to continue..."
+}
+
+# Main menu function
+show_menu() {
+    clear
+    echo -e "${CYAN}"
+    figlet "Cheat Menu" | lolcat
+    echo -e "${NC}"
+    
+    CHOICE=$(gum choose \
+        "🎮 Ghostty Shortcuts" \
+        "⚡ Custom Keybindings (Your Secret Weapons)" \
+        "🎹 TMUX-Style Commands (Cmd+B)" \
+        "📁 File Navigation" \
+        "🎨 Fun & Visual Commands" \
+        "🔥 Git Commands" \
+        "🛠️ System Monitoring" \
+        "🖼️ Image & Media Tools" \
+        "⌨️ Terminal Shortcuts" \
+        "🌟 Modern CLI Tools (Your Replacements)" \
+        "📝 Functions & Aliases" \
+        "🎯 Interactive Tutorials" \
+        "🔍 Search Everything" \
+        "📚 Full Cheatsheet" \
+        "🌈 Show Me Something Cool" \
+        "💡 Daily Power Tip" \
+        "❌ Exit")
+    
+    case "$CHOICE" in
+        "🎮 Ghostty Shortcuts")
+            show_ghostty_shortcuts
+            ;;
+        "⚡ Custom Keybindings (Your Secret Weapons)")
+            show_custom_keybindings
+            ;;
+        "🎹 TMUX-Style Commands (Cmd+B)")
+            show_tmux_commands
+            ;;
+        "📁 File Navigation")
+            show_file_navigation
+            ;;
+        "🎨 Fun & Visual Commands")
+            show_fun_commands
+            ;;
+        "🔥 Git Commands")
+            show_git_commands
+            ;;
+        "🛠️ System Monitoring")
+            show_system_tools
+            ;;
+        "🖼️ Image & Media Tools")
+            show_image_tools
+            ;;
+        "⌨️ Terminal Shortcuts")
+            show_terminal_shortcuts
+            ;;
+        "🌟 Modern CLI Tools (Your Replacements)")
+            show_modern_tools
+            ;;
+        "📝 Functions & Aliases")
+            show_functions_aliases
+            ;;
+        "🎯 Interactive Tutorials")
+            show_tutorials_menu
+            ;;
+        "🔍 Search Everything")
+            show_search_menu
+            ;;
+        "📚 Full Cheatsheet")
+            glow ~/terminal-cheatsheet.md | less
+            ;;
+        "🌈 Show Me Something Cool")
+            show_something_cool
+            ;;
+        "💡 Daily Power Tip")
+            show_power_tip
+            ;;
+        "❌ Exit")
+            echo "Remember: type 'cheat' anytime to come back! 👋"
+            exit 0
+            ;;
+    esac
+    
+    echo ""
+    gum confirm "Back to menu?" && show_menu
+}
+
+# NEW: Custom keybindings section
+show_custom_keybindings() {
+    gum style \
+        --border double \
+        --border-foreground 212 \
+        --padding "1 2" \
+        --margin "1" \
+        "⚡ YOUR CUSTOM KEYBINDINGS - SECRET WEAPONS!
+
+🔍 SEARCH & EDIT
+Ctrl+F  → Find file & edit it instantly!
+Ctrl+T  → FZF file search
+Ctrl+R  → Search command history (fuzzy!)
+Alt+C   → Change directory with preview
+
+📁 GIT INTEGRATION  
+Ctrl+G  → Interactive git status
+         (select files, see diffs!)
+
+🚀 QUICK ACTIONS
+Ctrl+P  → Find & kill processes
+Alt+D   → Jump to recent directories (zi)
+ESC ESC → Add 'sudo' to command!
+
+💡 HISTORY MAGIC
+↑/↓     → Search history by what you typed
+         (type 'git' then ↑ for git commands!)
+
+⚠️  THESE ARE YOUR UNIQUE POWERS!
+Most people don't have these - you do!"
+    
+    echo ""
+    if gum confirm "Want to try Ctrl+F now?"; then
+        echo "Press Ctrl+F to find and edit a file!"
+        read -n 1
+    fi
+}
+
+# NEW: Modern tools section
+show_modern_tools() {
+    gum style \
+        --border double \
+        --border-foreground 87 \
+        --padding "1 2" \
+        --margin "1" \
+        "🌟 YOUR MODERN CLI REPLACEMENTS
+
+OLD → NEW (What you have!)
+─────────────────────────
+cat   → bat      (syntax highlighting!)
+ls    → eza      (icons + git status!)
+find  → fd       (5x faster!)
+grep  → rg       (ripgrep - blazing fast!)
+cd    → z        (smart jumps!)
+top   → btop     (beautiful graphs!)
+htop  → btop     (even better!)
+ps    → procs    (intuitive output!)
+du    → dust     (visual disk usage!)
+df    → duf      (disk usage that makes sense!)
+man   → tldr     (examples first!)
+diff  → delta    (side-by-side diffs!)
+dig   → dog      (colorful DNS!)
+ping  → gping    (graph your ping!)
+
+🎯 QUICK TEST
+Try these NOW to see the difference:
+• ls vs eza --icons
+• cat file vs bat file
+• ps vs procs"
+    
+    echo ""
+    DEMO=$(gum choose "Compare ls vs eza" "Compare cat vs bat" "Compare ps vs procs" "Skip demo")
+    case "$DEMO" in
+        "Compare ls vs eza")
+            echo -e "${YELLOW}Old ls:${NC}"
+            ls -la | head -10
+            echo -e "\n${GREEN}Your eza:${NC}"
+            eza -la --icons | head -10
+            gum input --placeholder "See the difference? Press enter..."
+            ;;
+        "Compare cat vs bat")
+            echo "cat ~/.zshrc:" 
+            cat ~/.zshrc | head -20
+            echo -e "\n${GREEN}bat ~/.zshrc:${NC}"
+            bat ~/.zshrc --line-range=1:20
+            ;;
+        "Compare ps vs procs")
+            echo -e "${YELLOW}Old ps:${NC}"
+            ps aux | head -10
+            echo -e "\n${GREEN}Your procs:${NC}"
+            procs | head -10
+            ;;
+    esac
+}
+
+# NEW: Functions and aliases section
+show_functions_aliases() {
+    gum style \
+        --border double \
+        --border-foreground 214 \
+        --padding "1 2" \
+        --margin "1" \
+        "📝 YOUR CUSTOM FUNCTIONS & ALIASES
+
+🚀 QUICK SHORTCUTS
+reload    → Reload your terminal config
+zshrc     → Edit your .zshrc
+mkcd      → Make directory AND enter it
+backup    → Backup file with timestamp
+extract   → Extract ANY archive type
+ginit     → Start git repo with .gitignore
+targz     → Create tar.gz archive
+note      → Add a quick note
+notes     → View all your notes
+weather   → Get weather (weather Tokyo)
+cht       → Cheatsheet for any command
+
+📂 SMART NAVIGATION  
+..        → cd ..
+...       → cd ../..
+-         → cd to previous directory
+~         → cd to home
+
+🌐 NETWORK
+myip      → Your public IP
+localip   → Your local IP  
+ports     → Show listening ports
+serve     → Start Python web server
+speedtest → Test internet speed
+
+💡 TRY THIS
+Type 'mkcd test-folder' - it creates AND enters!"
+    
+    echo ""
+    if gum confirm "Try mkcd now?"; then
+        FOLDER=$(gum input --placeholder "Folder name to create...")
+        if [ -n "$FOLDER" ]; then
+            mkcd "$FOLDER"
+            echo "You're now in: $(pwd)"
+            echo "Type 'cd -' to go back!"
+            gum input --placeholder "Press enter..."
+        fi
+    fi
+}
+
+# NEW: Interactive tutorials menu
+show_tutorials_menu() {
+    TUTORIAL=$(gum choose \
+        "🚀 Master FZF (Fuzzy Finding)" \
+        "📁 Master Zoxide (Smart CD)" \
+        "🎨 Master Eza (Beautiful LS)" \
+        "🔥 Master Lazygit" \
+        "⚡ Master Terminal Navigation" \
+        "🎯 Build a Quick Workflow" \
+        "Back to menu")
+    
+    case "$TUTORIAL" in
+        "🚀 Master FZF (Fuzzy Finding)")
+            tutorial_fzf
+            ;;
+        "📁 Master Zoxide (Smart CD)")
+            tutorial_zoxide
+            ;;
+        "🎨 Master Eza (Beautiful LS)")
+            tutorial_eza
+            ;;
+        "🔥 Master Lazygit")
+            tutorial_lazygit
+            ;;
+        "⚡ Master Terminal Navigation")
+            tutorial_navigation
+            ;;
+        "🎯 Build a Quick Workflow")
+            tutorial_workflow
+            ;;
+    esac
+}
+
+# FZF Tutorial
+tutorial_fzf() {
+    clear
+    gum style \
+        --border rounded \
+        --border-foreground 99 \
+        --padding "1 2" \
+        "🚀 FZF MASTERY COURSE
+
+FZF = Fuzzy Finder = Find ANYTHING instantly!
+
+LESSON 1: Basic FZF"
+    
+    echo ""
+    gum confirm "Ready to try fzf?" && {
+        echo "Type 'fzf' and press enter. Type to filter, arrows to select, enter to choose:"
+        fzf
+    }
+    
+    echo ""
+    gum style \
+        --border rounded \
+        --border-foreground 99 \
+        --padding "1 2" \
+        "LESSON 2: Power Shortcuts
+
+Ctrl+T → Find any file (with preview!)
+Ctrl+R → Search ALL your command history
+Alt+C  → cd to any directory
+
+TRY IT: Press Ctrl+R right now!"
+    
+    gum input --placeholder "Try Ctrl+R, then press enter to continue..."
+    
+    gum style \
+        --border rounded \
+        --border-foreground 99 \
+        --padding "1 2" \
+        "LESSON 3: Advanced FZF
+
+# Find and edit files
+vim \$(fzf)
+
+# Kill processes interactively  
+kill -9 \$(ps aux | fzf | awk '{print \$2}')
+
+# Git branch switching
+git checkout \$(git branch | fzf)
+
+# Search file contents
+rg --files | fzf --preview 'bat {}'"
+    
+    echo ""
+    gum input --placeholder "You're now an FZF master! Press enter..."
+}
+
+# Zoxide tutorial
+tutorial_zoxide() {
+    clear
+    gum style \
+        --border rounded \
+        --border-foreground 214 \
+        --padding "1 2" \
+        "📁 ZOXIDE MASTERY - CD ON STEROIDS!
+
+Zoxide learns your habits and lets you jump anywhere!
+
+LESSON 1: Basic Usage
+Instead of: cd ~/Documents/Projects/my-app
+Just type:  z my-app
+
+Instead of: cd ../../../Downloads
+Just type:  z down"
+    
+    echo ""
+    echo "Your most visited directories:"
+    zoxide query -l | head -10
+    
+    echo ""
+    gum confirm "Want to see interactive mode?" && {
+        echo "Type 'zi' for interactive selection:"
+        echo "(Press Ctrl+C if you want to cancel)"
+        zi
+    }
+    
+    gum style \
+        --border rounded \
+        --border-foreground 214 \
+        --padding "1 2" \
+        "ADVANCED TIPS:
+
+z foo       → Jump to best match with 'foo'
+z foo bar   → Jump to best match with 'foo' AND 'bar'
+zi          → Interactive selection
+z -         → Go back to previous directory
+
+POWER MOVE: Combine with fzf!
+z \$(fd -t d | fzf)  → Choose from ALL directories!"
+}
+
+# Search menu
+show_search_menu() {
+    SEARCH_TYPE=$(gum choose \
+        "📄 Search in files (ripgrep)" \
+        "📁 Search filenames (fd)" \
+        "📚 Search cheatsheet" \
+        "🔙 Back")
+    
+    case "$SEARCH_TYPE" in
+        "📄 Search in files (ripgrep)")
+            PATTERN=$(gum input --placeholder "Search pattern...")
+            if [ -n "$PATTERN" ]; then
+                echo "Searching for '$PATTERN'..."
+                rg "$PATTERN" --color=always | head -20
+            fi
+            ;;
+        "📁 Search filenames (fd)")
+            PATTERN=$(gum input --placeholder "Filename pattern...")
+            if [ -n "$PATTERN" ]; then
+                fd "$PATTERN" --color=always | head -20
+            fi
+            ;;
+        "📚 Search cheatsheet")
+            search_cheatsheet
+            ;;
+    esac
+    gum input --placeholder "Press enter to continue..."
+}
+
+# Power tip of the day
+show_power_tip() {
+    TIPS=(
+        "🚀 TIP: Press 'v' in lazygit to edit files directly!"
+        "⚡ TIP: Type '!!' to run your last command again!"
+        "🎯 TIP: Use 'Alt+.' to insert the last argument from previous command!"
+        "💡 TIP: Type 'fuck' after a failed command to fix it!"
+        "🔥 TIP: In fzf, use 'Ctrl+/' to toggle preview window!"
+        "📁 TIP: Type '-' to go back to previous directory!"
+        "🎨 TIP: Run 'btop' and press 'p' to cycle through themes!"
+        "⌨️ TIP: Start typing and press → to accept autosuggestion!"
+        "🌟 TIP: Use 'gw' to switch between git worktrees!"
+        "📊 TIP: Run 'duf' for beautiful disk usage info!"
+        "🔍 TIP: Use 'tldr <command>' for quick examples!"
+        "🚀 TIP: Press Ctrl+G for interactive git status!"
+        "💾 TIP: Use 'backup <file>' to create timestamped backup!"
+        "🎯 TIP: Type 'zi' for interactive directory jumping!"
+        "⚡ TIP: Double-tap ESC to add 'sudo' to your command!"
+    )
+    
+    # Show a random tip with style
+    TIP="${TIPS[$RANDOM % ${#TIPS[@]}]}"
+    
+    clear
+    echo -e "${CYAN}"
+    figlet "Power Tip!" | lolcat
+    echo -e "${NC}"
+    
+    gum style \
+        --border double \
+        --border-foreground 212 \
+        --padding "2 4" \
+        --margin "1" \
+        --align center \
+        "$TIP"
+    
+    echo ""
+    echo "Want to try it? Go ahead!"
+    gum input --placeholder "Press enter for another tip..." && show_power_tip
+}
+
+# Enhanced git commands
+show_git_commands() {
+    gum style \
+        --border double \
+        --border-foreground 208 \
+        --padding "1 2" \
+        --margin "1" \
+        "🔥 GIT COMMAND MASTERY
+
+🎯 VISUAL TOOLS (Recommended!)
+lazygit       → Full git UI (BEST!)
+tig           → Alternative git UI
+gitui         → Another great option
+
+⚡ YOUR SHORTCUTS
+gs   → git status        gp   → git push
+ga   → git add          gpl  → git pull  
+gaa  → git add .        gco  → git checkout
+gc   → git commit       gb   → git branch
+gcm  → git commit -m    glog → pretty git log
+gdiff → git diff (colored)
+gw   → switch git worktrees (NEW!)
+
+🚀 POWER COMMANDS
+ginit         → Initialize repo with .gitignore
+git add -p    → Stage specific parts
+git bisect    → Find bug introductions
+git stash     → Save work temporarily
+git reflog    → Undo ANYTHING
+
+💡 WORKFLOW TIPS
+1. Use lazygit for everything!
+2. Press Ctrl+G for quick status
+3. Use 'gw' for worktree switching"
+    
+    echo ""
+    if gum confirm "Open lazygit tutorial?"; then
+        tutorial_lazygit
+    fi
+}
+
+# Lazygit tutorial
+tutorial_lazygit() {
+    clear
+    gum style \
+        --border rounded \
+        --border-foreground 208 \
+        --padding "1 2" \
+        "🔥 LAZYGIT QUICK TUTORIAL
+
+MAIN PANELS:
+• Status (top left)
+• Files (left)
+• Diff (right)
+• Commands (bottom)
+
+KEY SHORTCUTS:
+Space  → Stage/unstage file
+c      → Commit
+p      → Push
+P      → Pull
+b      → Branches
+s      → Stash
+?      → Help (IMPORTANT!)
+
+POWER MOVES:
+a      → Stage all
+d      → Delete/discard
+e      → Edit file
+v      → Open in editor
+x      → Open menu
+]      → Next tab
+[      → Previous tab"
+    
+    echo ""
+    if [ -d .git ]; then
+        gum confirm "This is a git repo! Open lazygit?" && lazygit
+    else
+        echo "Not in a git repo. Navigate to one and type 'lazygit'!"
+    fi
+}
+
+# Enhanced fun commands with more demos
+show_fun_commands() {
+    gum style \
+        --border double \
+        --border-foreground 205 \
+        --padding "1 2" \
+        --margin "1" \
+        "🎨 FUN & VISUAL COMMANDS
+
+🌈 VISUAL EFFECTS
+cmatrix       → Matrix rain
+pipes-sh      → Animated pipes
+rain          → Rain effect
+asciiquarium  → Fish tank
+sl            → Choo choo train!
+neko          → Cat follows cursor
+cava          → Audio visualizer
+tty-clock -c  → Digital clock
+
+🎭 TEXT ART
+figlet text   → Big ASCII text
+toilet text   → Colorful ASCII
+cowsay text   → Cow speaks
+ponysay text  → Pony speaks
+fortune       → Random quotes
+lolcat        → Rainbowify text
+
+📊 SYSTEM BEAUTY
+neofetch      → System + ASCII logo
+pfetch        → Minimal version
+btop          → Beautiful monitoring
+
+🎮 COMBINATIONS
+fortune | cowsay | lolcat
+figlet PABLO | lolcat
+echo 'Hello' | toilet -f mono12 | lolcat"
+    
+    echo ""
+    DEMO=$(gum choose \
+        "🌧️ Matrix Rain" \
+        "🐠 Aquarium" \
+        "🚂 Punishment Train" \
+        "🎨 Text Art Combo" \
+        "🌈 Rainbow Fortune" \
+        "💻 System Info" \
+        "🎵 Audio Visualizer" \
+        "Skip demos")
+    
+    case "$DEMO" in
+        "🌧️ Matrix Rain")
+            timeout 5s cmatrix -b -C cyan
+            ;;
+        "🐠 Aquarium")
+            timeout 10s asciiquarium
+            ;;
+        "🚂 Punishment Train")
+            sl
+            ;;
+        "🎨 Text Art Combo")
+            echo "PABLO" | figlet | lolcat
+            echo "IS" | toilet -f mono12 | lolcat
+            echo "AWESOME" | cowsay | lolcat
+            ;;
+        "🌈 Rainbow Fortune")
+            fortune | ponysay | lolcat
+            ;;
+        "💻 System Info")
+            neofetch
+            ;;
+        "🎵 Audio Visualizer")
+            echo "Play some music and watch!"
+            timeout 10s cava
+            ;;
+    esac
+    gum input --placeholder "Press enter to continue..."
+}
+
+# Workflow tutorial
+tutorial_workflow() {
+    clear
+    gum style \
+        --border rounded \
+        --border-foreground 212 \
+        --padding "1 2" \
+        "🎯 BUILD YOUR POWER WORKFLOW
+
+Let's combine everything you've learned!
+
+SCENARIO: Starting a new project"
+    
+    echo ""
+    gum confirm "Ready to see a pro workflow?" && {
+        echo -e "${GREEN}Step 1: Create and enter directory${NC}"
+        echo "$ mkcd my-awesome-project"
+        
+        echo -e "\n${GREEN}Step 2: Initialize git${NC}"
+        echo "$ ginit"
+        
+        echo -e "\n${GREEN}Step 3: Create some files${NC}"
+        echo "$ touch README.md index.js"
+        
+        echo -e "\n${GREEN}Step 4: Open in editor (Ctrl+F to find files)${NC}"
+        echo "$ code ."
+        
+        echo -e "\n${GREEN}Step 5: Use lazygit for version control${NC}"
+        echo "$ lazygit"
+        
+        echo -e "\n${GREEN}Step 6: Quick commit${NC}"
+        echo "$ gcm 'Initial commit'"
+        
+        echo -e "\n${GREEN}Step 7: Jump back anytime${NC}"
+        echo "$ z awesome"
+    }
+    
+    gum input --placeholder "You're ready! Press enter..."
+}
+
+# Ghostty shortcuts (updated)
+show_ghostty_shortcuts() {
+    gum style \
+        --border double \
+        --border-foreground 212 \
+        --padding "1 2" \
+        --margin "1" \
+        "🎮 GHOSTTY SHORTCUTS - COMPLETE GUIDE
+
+🚀 QUICK TERMINAL
+Cmd+\`         → Toggle quick terminal (ANYWHERE!)
+                 This is your #1 superpower!
+
+📐 SPLITS & TABS
+Cmd+D         → Split right
+Cmd+Shift+D   → Split down
+Cmd+T         → New tab
+Cmd+W         → Close current
+Cmd+[1-9]     → Jump to tab
+Cmd+Shift+[/] → Previous/next tab
+
+🎯 NAVIGATION
+Cmd+←/→/↑/↓   → Navigate splits
+Cmd+H/J/K/L   → Navigate (vim style) [NEW!]
+Mouse hover   → Focus follows mouse!
+Cmd+Shift+Z   → Zoom/unzoom split
+Cmd+Shift+E   → Equalize splits
+
+⚙️ CONTROLS
+Cmd+K         → Clear screen
+Cmd+R         → Reload config instantly
+Cmd+Plus/Min  → Zoom in/out
+Cmd+0         → Reset zoom
+Cmd+F         → Find in terminal
+Cmd+G/Shift+G → Find next/previous
+Cmd+I         → Inspector (debug)
+
+🎨 APPEARANCE
+Cmd+Shift+F   → Fullscreen
+Your theme    → UltraViolent (sick!)
+Your font     → JetBrains Mono"
+    
+    echo ""
+    if gum confirm "Test quick terminal? (Press Cmd+\` after)"; then
+        echo "Minimize this window, then press Cmd+\` from any app!"
+        echo "It's your instant terminal from anywhere!"
+        gum input --placeholder "Press enter when you've tried it..."
+    fi
+}
+
+# Start with welcome if first run
+show_welcome
+
+# Start the menu
+show_menu

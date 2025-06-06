@@ -1,0 +1,12 @@
+# Set the theme
+--theme="Dracula"
+
+# Show line numbers, Git modifications and file header
+--style="numbers,changes,header"
+
+# Use italic text in the terminal (not all terminals support this)
+--italic-text=always
+
+# Add custom mappings
+--map-syntax "*.jenkinsfile:Groovy"
+--map-syntax ".ignore:Git Ignore"

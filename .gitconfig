@@ -1,0 +1,55 @@
+############################################################
+#  ~/.gitconfig  –  Pablo’s Git + Delta configuration      #
+############################################################
+
+[user]
+    name  = Pablo Alvarado
+    email = pibulus@gmail.com
+
+############################################################
+#  ALIASES  –  keep them mnemonic, short, and portable     #
+############################################################
+[alias]
+    # Logs
+    lol  = log --oneline --graph --all
+    lg   = log --graph --pretty=format:'%C(yellow)%h%Creset - %C(cyan)%an%Creset, %C(green)%ar%Creset : %C(auto)%s'
+
+    # Status + add/commit convenience
+    st   = status -s
+    a    = add .
+    c    = commit -m
+    s    = "!git add . && git commit -m"
+
+    # Branching & merging
+    co   = checkout
+    new  = checkout -b
+    m    = merge
+    d    = branch -d
+    undo = reset --hard HEAD
+    yikes = reset --hard origin/main
+    resurrect = "!git reflog && echo 'Copy a hash and use: git checkout -b fixit <hash>'"
+
+    # Push / pull
+    p    = push
+    pl   = pull
+
+    # Delta‑powered diffs (portable fall‑back when zsh aliases aren’t available)
+    dd   = "!git diff | delta"
+    dds  = "!git diff --cached | delta"
+    gb   = "!git branch --all | sed 's/^[* ]*//' | fzf --ansi --preview 'git log -n5 --color=always {}' | xargs git checkout"
+
+############################################################
+#  CORE + DELTA – colourful diffs everywhere               #
+############################################################
+[core]
+    pager = delta
+	excludesfile = /Users/pabloalvarado/.gitignore_global
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    features      = side-by-side line-numbers decorations
+    navigate      = true            # n / N jump between hunks/files
+    line-numbers  = true
+    syntax-theme  = OneHalfDark     # change with delta --list-themes

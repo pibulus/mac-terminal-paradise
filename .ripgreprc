@@ -1,0 +1,24 @@
+# Search hidden files by default
+--hidden
+
+# But still ignore .git
+--glob=!.git/*
+
+# Smart case search
+--smart-case
+
+# Add custom types
+--type-add=web:*.{html,css,js,jsx,ts,tsx}
+--type-add=config:*.{json,toml,yaml,yml,ini}
+
+# Colors
+--colors=line:fg:yellow
+--colors=line:style:bold
+--colors=path:fg:green
+--colors=path:style:bold
+--colors=match:fg:red
+--colors=match:style:bold
+
+# Max columns
+--max-columns=150
+--max-columns-preview

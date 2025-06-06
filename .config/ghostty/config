@@ -1,0 +1,161 @@
+# 🎨 Pablo's Clean & Fun Ghostty Config 🎨
+# ~/.config/ghostty/config
+# 
+# A perfect balance of minimal and magical! ✨
+
+# ==========================
+# 🎨 THEME
+# ==========================
+theme = UltraViolent
+
+# Want to try something new? Here are the best ones:
+# theme = dracula          # 🧛 Classic dark
+# theme = catppuccin-mocha # 🐱 Smooth pastel
+# theme = rose-pine        # 🌹 Dreamy
+# theme = nord             # 🏔️ Arctic vibes
+
+# ==========================
+# 🔤 FONTS 
+# ==========================
+# Using JetBrains Mono - clean with ligatures & icons!
+font-family = JetBrainsMono Nerd Font Mono
+
+# Other sick fonts you have installed:
+# font-family = FiraCode Nerd Font Mono      # => becomes → 
+# font-family = Hack Nerd Font Mono          # Wide & readable
+# font-family = SF Mono                      # Apple's choice
+# font-family = Monaco                       # The classic
+# font-family = Menlo                        # GitHub's pick
+
+font-size = 14
+font-thicken = true
+
+# Test ligatures: => != === <> ++ :: |> <| www ///
+
+# ==========================
+# 🪟 WINDOW 
+# ==========================
+# No transparency - keeping it clean
+background-opacity = 1.0
+
+# Breathing room for your eyes
+window-padding-x = 10
+window-padding-y = 10
+
+# Window behavior
+window-decoration = true
+window-theme = auto
+window-save-state = always
+
+# Make inactive splits slightly dimmed
+unfocused-split-opacity = 0.85
+
+# ==========================
+# 🎯 CURSOR 
+# ==========================
+cursor-style = block
+
+# ==========================
+# ✨ FEATURES 
+# ==========================
+# Scrolling
+mouse-scroll-multiplier = 3
+scrollback-limit = 10000
+
+# Copy/paste
+copy-on-select = clipboard
+clipboard-paste-protection = true
+
+# Make bold text BOLD
+bold-is-bright = true
+
+# Minimum contrast for readability
+minimum-contrast = 1.1
+
+# Smart focus
+focus-follows-mouse = true
+mouse-hide-while-typing = true
+
+# ==========================
+# 🍎 MACOS GOODIES 
+# ==========================
+# Integrated tabs!
+macos-titlebar-style = tabs
+# Default icon (holographic IS valid after all!)
+macos-icon = holographic
+
+# Other cool icons to try:
+# macos-icon = blueprint
+# macos-icon = chalkboard
+# macos-icon = glass
+# macos-icon = microchip
+# macos-icon = paper
+# macos-icon = retro
+# macos-icon = xray
+
+# ==========================
+# 🚀 QUICK TERMINAL 
+# ==========================
+# Dropdown terminal from anywhere!
+quick-terminal-position = top
+quick-terminal-animation-duration = 0.2
+quick-terminal-autohide = true
+
+# ==========================
+# ⌨️ KEYBINDINGS 
+# ==========================
+# THE KILLER FEATURE - Quick terminal from ANYWHERE
+keybind = global:super+grave_accent=toggle_quick_terminal
+
+# Just basic splits for now
+keybind = super+d=new_split:right
+keybind = super+shift+d=new_split:down
+
+# Basic tab
+keybind = super+t=new_tab
+
+# ==========================
+# 🎮 OTHER SETTINGS 
+# ==========================
+shell-integration = detect
+shell-integration-features = cursor,sudo,title
+
+# Terminal identification
+term = xterm-ghostty
+
+# Window behavior
+confirm-close-surface = true
+window-inherit-working-directory = true
+window-inherit-font-size = true
+
+# Clipboard
+clipboard-read = allow
+clipboard-write = allow
+clipboard-trim-trailing-spaces = true
+
+# Notifications & updates
+desktop-notifications = true
+auto-update = download
+auto-update-channel = stable
+
+# Resize overlay (shows dimensions when resizing)
+resize-overlay = always
+resize-overlay-position = center
+
+# Non-native fullscreen (faster!)
+macos-non-native-fullscreen = visible-menu
+
+# Auto secure input for passwords
+macos-auto-secure-input = true
+
+# Images support (for Kitty protocol)
+image-storage-limit = 320000000
+
+# ==========================
+# 💡 PRO TIPS 
+# ==========================
+# 1. Press Cmd+` from ANY app to summon terminal!
+# 2. Cmd+R reloads this config instantly
+# 3. Try the holographic icon - it's AMAZING
+# 4. Cmd+D/Cmd+Shift+D for splits like a boss
+# 5. Your terminal is now a work of art! 🎨
