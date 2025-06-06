@@ -473,6 +473,9 @@ show_power_tip() {
         "🎨 TIP: Run 'btop' and press 'p' to cycle through themes!"
         "⌨️ TIP: Start typing and press → to accept autosuggestion!"
         "🌟 TIP: Use 'gw' to switch between git worktrees!"
+        "🌳 TIP: Create worktrees with: git worktree add ../feature-name branch-name"
+        "🎯 TIP: Keep 3 worktrees: main/, feature/, hotfix/ = never stash again!"
+        "⚡ TIP: Run lazygit in each worktree for parallel git workflows!"
         "📊 TIP: Run 'duf' for beautiful disk usage info!"
         "🔍 TIP: Use 'tldr <command>' for quick examples!"
         "🚀 TIP: Press Ctrl+G for interactive git status!"
@@ -523,7 +526,29 @@ gaa  → git add .        gco  → git checkout
 gc   → git commit       gb   → git branch
 gcm  → git commit -m    glog → pretty git log
 gdiff → git diff (colored)
-gw   → switch git worktrees (NEW!)
+
+🌳 GIT WORKTREES (🤯 GAME CHANGER!)
+gw        → Switch between worktrees (with fzf!)
+
+💭 What are worktrees?
+   Work on multiple branches AT THE SAME TIME!
+   Different folders = Different branches = NO STASHING! 🎉
+
+✨ The Magic:
+   git worktree add ../my-feature feature-branch
+   cd ../my-feature  # ← You're on feature-branch
+   cd ../main-repo   # ← Still on main! 🤯
+
+🚀 Perfect for:
+   • Reviewing PRs while coding your feature
+   • Lightning-fast hotfixes (no context switching!)
+   • Testing different versions side-by-side
+   • Working on multiple features simultaneously
+
+⚡ Quick Start:
+   1. git worktree add ../hotfix hotfix-branch
+   2. cd ../hotfix → Fix the bug → Commit & push
+   3. cd back → Your feature work is UNTOUCHED! ✨
 
 🚀 POWER COMMANDS
 ginit         → Initialize repo with .gitignore
@@ -533,12 +558,16 @@ git stash     → Save work temporarily
 git reflog    → Undo ANYTHING
 
 💡 WORKFLOW TIPS
-1. Use lazygit for everything!
-2. Press Ctrl+G for quick status
-3. Use 'gw' for worktree switching"
+1. 🎯 Use lazygit for everything visual!
+2. ⚡ Press Ctrl+G for lightning-quick git status
+3. 🌳 Use worktrees = never stash again!
+4. 🔀 Type 'gw' to switch worktrees with style
+5. 🎨 Combine: lazygit in each worktree = god mode!"
     
     echo ""
-    if gum confirm "Open lazygit tutorial?"; then
+    if gum confirm "Want to learn about worktrees?"; then
+        show_worktree_tutorial
+    elif gum confirm "Open lazygit tutorial?"; then
         tutorial_lazygit
     fi
 }
@@ -582,6 +611,92 @@ x      → Open menu
     else
         echo "Not in a git repo. Navigate to one and type 'lazygit'!"
     fi
+}
+
+# Add this new function for worktree tutorial
+show_worktree_tutorial() {
+    clear
+    gum style \
+        --border rounded \
+        --border-foreground 214 \
+        --padding "1 2" \
+        "🌳 GIT WORKTREES MASTERY COURSE
+
+😤 THE PAIN:
+You: *deep in flow state coding epic feature*
+Boss: "DROP EVERYTHING! FIX THIS CRITICAL BUG NOW!"
+Old you: stash → switch → fix → switch → unstash → "what was I doing?" 😫
+
+🎉 THE MAGIC: WORKTREES!
+New you: cd ../hotfix → fix → cd back → *still in flow state* ✨
+
+📚 LESSON 1: Create Your First Worktree"
+    
+    echo ""
+    gum confirm "Ready to create your first worktree?" && {
+        echo -e "${PURPLE}✨ In your main repo, cast this spell:${NC}"
+        echo -e "${YELLOW}$ git worktree add ../hotfix-login hotfix/login-bug${NC}"
+        echo ""
+        echo -e "${GREEN}🎯 BOOM! This creates:${NC}"
+        echo "   📁 New folder '../hotfix-login'"
+        echo "   🌿 With 'hotfix/login-bug' branch checked out"
+        echo "   🚀 Ready to work immediately!"
+        echo ""
+        gum input --placeholder "Press enter to see the workflow magic..."
+    }
+    
+    gum style \
+        --border rounded \
+        --border-foreground 214 \
+        --padding "1 2" \
+        "📚 LESSON 2: The Worktree Workflow Dance 💃
+
+${CYAN}Terminal 1:${NC}
+$ cd ../hotfix-login    # 🐛 Bug fixing mode
+$ # Fix the critical bug...
+$ git commit -m '🚑 Fix login crash'
+$ git push              # 🎉 Bug fixed!
+
+${PURPLE}Terminal 2:${NC}
+$ cd ../main-repo       # 🚀 Feature building mode
+$ # Your feature work is COMPLETELY untouched!
+$ # Continue where you left off... ✨
+
+🎊 NO STASHING! NO BRANCH SWITCHING! NO LOST CONTEXT!
+Just pure, uninterrupted developer bliss! 🧘‍♂️"
+    
+    echo ""
+    gum style \
+        --border rounded \
+        --border-foreground 214 \
+        --padding "1 2" \
+        "📚 LESSON 3: Master Your Worktree Kingdom 👑
+
+🔍 List your empire:
+$ git worktree list
+
+⚡ Switch like a ninja:
+$ gw    # Fuzzy find + instant teleport! 🥷
+
+🧹 Cleanup when done:
+$ git worktree remove ../hotfix-login
+
+🏰 PRO SETUP (Pablo's Secret):
+I keep 3 permanent worktrees:
+   🌿 main/     → pristine main branch
+   ✨ feature/  → current epic feature
+   🚑 hotfix/   → emergency response team
+
+💡 Result: I NEVER stash. I NEVER lose context.
+   I'm basically a git wizard now. 🧙‍♂️✨"
+    
+    echo ""
+    if [ -d .git ]; then
+        echo "Your current worktrees:"
+        git worktree list
+    fi
+    
+    gum input --placeholder "🧙‍♂️ You're now a worktree wizard! Ready to rule your git kingdom? Press enter..."
 }
 
 # Enhanced fun commands with more demos
