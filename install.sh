@@ -24,7 +24,7 @@ ln -sf $(pwd)/.ripgreprc ~/.ripgreprc
 ln -sf $(pwd)/terminal-cheatsheet.md ~/terminal-cheatsheet.md
 
 # Symlink configs
-ln -sf $(pwd)/.config/starship/starship.toml ~/.config/starship.toml
+ln -sf $(pwd)/.config/starship.toml ~/.config/starship.toml
 ln -sf $(pwd)/.config/bat/config ~/.config/bat/config
 ln -sf $(pwd)/.config/btop/btop.conf ~/.config/btop/btop.conf
 ln -sf $(pwd)/.config/lazygit/config.yml ~/.config/lazygit/config.yml

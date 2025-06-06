@@ -69,7 +69,7 @@ brew "cmatrix"             # Matrix rain animation
 brew "asciiquarium"        # Fish tank in your terminal!
 brew "sl"                  # Train that punishes your typos
 brew "pipes-sh"            # Animated pipes screensaver
-brew "bb"                  # Mind-blowing ASCII art demo
+# brew "bb"                  # Mind-blowing ASCII art demo (BROKEN - no formula)
 brew "no-more-secrets"     # Text decryption effect from Sneakers movie
 
 # Terminal Bling
@@ -77,7 +77,7 @@ brew "neofetch"            # System info with ASCII logos
 brew "pfetch"              # Minimal pretty system info
 brew "cava"                # Audio visualizer that dances
 brew "tty-clock"           # Digital clock for your terminal
-brew "termsaver"           # Multiple terminal screensavers
+# brew "termsaver"           # Multiple terminal screensavers (BROKEN - no formula)
 brew "toilet"              # Colorful ASCII text generator
 
 # Neko and Friends
@@ -186,24 +186,24 @@ cask "alfred"              # Launcher on steroids (optional)
 cask "rocket"              # Emoji picker 🚀
 
 # Development
-cask "sublime-text"        # Text editor
-cask "warp"                # AI-powered terminal
+# cask "sublime-text"        # Text editor (focus on terminal workflow)
+# cask "warp"                # AI-powered terminal (we have Ghostty!)
 cask "github"              # GitHub Desktop
 
 # System Enhancement
 cask "bluesnooze"          # Bluetooth sleep manager
 cask "dockdoor"            # Dock window previews
-cask "notunes"             # Stop iTunes from launching
+# cask "notunes"             # Stop iTunes from launching (BROKEN - upgrade failed)
 
 # Media
 cask "iina"                # Beautiful video player
-cask "kodi"                # Media center (optional)
+# cask "kodi"                # Media center (REMOVED - not terminal related)
 
 # Communication
 cask "halloy"              # IRC client for the modern age
 
-# Gaming
-cask "flycast"             # Dreamcast emulator
+# Gaming (REMOVED - not needed for terminal setup)
+# cask "flycast"             # Dreamcast emulator
 
 # QuickLook Magic (Preview Everything!)
 cask "qlcolorcode"         # Source code with syntax highlighting
@@ -212,75 +212,22 @@ cask "qlstephen"           # Plain text files
 cask "quicklook-csv"       # CSV files
 cask "quicklook-json"      # JSON files
 cask "webpquicklook"       # WebP images
-cask "suspicious-package"  # Mac packages
-cask "qlimagesize"         # Image dimensions in title bar
+# cask "suspicious-package"  # Mac packages (BROKEN - upgrade failed)
+# cask "qlimagesize"         # Image dimensions in title bar (BROKEN - install failed)
 cask "qlvideo"             # More video formats
 cask "qlprettypatch"       # Patch/diff files
 
 # Fonts (Because Code Deserves Beauty)
 cask "font-fira-code-nerd-font"          # Ligatures + icons
 cask "font-jetbrains-mono-nerd-font"     # Alternative beauty
-cask "font-cascadia-code-nerd-font"      # Microsoft's gift
+# cask "font-cascadia-code-nerd-font"      # Microsoft's gift (BROKEN - unavailable)
 cask "font-hack-nerd-font"               # Classic hacker font
 
 # =============================================================================
-# 🎮 VS CODE EXTENSIONS (Your Code Editor Magic)
+# 🎮 VS CODE EXTENSIONS (REMOVED - Not using VS Code much for now)
 # =============================================================================
-
-# Themes & Beauty
-vscode "akamud.vscode-theme-onedark"
-vscode "vscode-icons-team.vscode-icons"
-vscode "oderwat.indent-rainbow"
-vscode "naumovs.color-highlight"          # Highlight colors in code
-
-# Git Power
-vscode "eamodio.gitlens"
-vscode "donjayamanne.githistory"
-vscode "github.vscode-pull-request-github"
-vscode "felipecaputo.git-project-manager"   # Quick project switching
-
-# AI Assistance
-vscode "github.copilot"
-vscode "github.copilot-chat"
-vscode "doublebot.doublebot"              # Another AI assistant
-
-# Core Development
-vscode "ms-python.python"
-vscode "ms-python.vscode-pylance"
-vscode "ms-python.debugpy"                # Python debugging
-vscode "dbaeumer.vscode-eslint"
-vscode "esbenp.prettier-vscode"
-
-# Language Support
-vscode "svelte.svelte-vscode"             # Svelte framework
-vscode "denoland.vscode-deno"             # Deno runtime
-vscode "mads-hartmann.bash-ide-vscode"    # Bash scripting
-vscode "timonwong.shellcheck"             # Shell script analysis
-
-# Productivity Boosters
-vscode "wayou.vscode-todo-highlight"
-vscode "streetsidesoftware.code-spell-checker"
-vscode "ms-azuretools.vscode-docker"
-vscode "rangav.vscode-thunder-client"
-vscode "quicktype.quicktype"              # Generate types from JSON
-vscode "shardulm94.trailing-spaces"       # Highlight trailing spaces
-vscode "chakrounanas.turbo-console-log"   # Quick console.log insertion
-vscode "benjpas.close-all"                # Close all editors
-vscode "denjay.fold-level"                # Code folding control
-
-# Web Development
-vscode "bradlc.vscode-tailwindcss"
-vscode "formulahendry.auto-rename-tag"
-vscode "heybourn.headwind"                # Sort Tailwind classes
-vscode "firefox-devtools.vscode-firefox-debug"  # Firefox debugging
-
-# Code Snippets
-vscode "xabikos.javascriptsnippets"       # JavaScript snippets
-vscode "ericsia.pythonsnippets3"          # Python snippets
-
-# File Support
-vscode "shd101wyy.markdown-preview-enhanced"
-vscode "mechatroner.rainbow-csv"          # CSV with colors!
+# Note: VS Code extensions removed to focus on terminal-based workflow
+# Can be re-enabled later if needed by uncommenting the vscode lines
 
 # =============================================================================
 # 🎭 BONUS PABLO SPECIALS
