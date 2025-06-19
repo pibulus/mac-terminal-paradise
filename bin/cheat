@@ -93,6 +93,9 @@ show_menu() {
         "📚 Full Cheatsheet" \
         "🌈 Show Me Something Cool" \
         "💡 Daily Power Tip" \
+        "🚀 Svelte Development" \
+        "📦 Dotfiles Management" \
+        "🧪 Test My Setup" \
         "❌ Exit")
     
     case "$CHOICE" in
@@ -143,6 +146,15 @@ show_menu() {
             ;;
         "💡 Daily Power Tip")
             show_power_tip
+            ;;
+            "🚀 Svelte Development")
+            show_svelte_dev
+            ;;
+        "📦 Dotfiles Management")
+            show_dotfiles_management
+            ;;
+        "🧪 Test My Setup")
+            test_setup
             ;;
         "❌ Exit")
             echo "Remember: type 'cheat' anytime to come back! 👋"
@@ -473,9 +485,6 @@ show_power_tip() {
         "🎨 TIP: Run 'btop' and press 'p' to cycle through themes!"
         "⌨️ TIP: Start typing and press → to accept autosuggestion!"
         "🌟 TIP: Use 'gw' to switch between git worktrees!"
-        "🌳 TIP: Create worktrees with: git worktree add ../feature-name branch-name"
-        "🎯 TIP: Keep 3 worktrees: main/, feature/, hotfix/ = never stash again!"
-        "⚡ TIP: Run lazygit in each worktree for parallel git workflows!"
         "📊 TIP: Run 'duf' for beautiful disk usage info!"
         "🔍 TIP: Use 'tldr <command>' for quick examples!"
         "🚀 TIP: Press Ctrl+G for interactive git status!"
@@ -526,29 +535,7 @@ gaa  → git add .        gco  → git checkout
 gc   → git commit       gb   → git branch
 gcm  → git commit -m    glog → pretty git log
 gdiff → git diff (colored)
-
-🌳 GIT WORKTREES (🤯 GAME CHANGER!)
-gw        → Switch between worktrees (with fzf!)
-
-💭 What are worktrees?
-   Work on multiple branches AT THE SAME TIME!
-   Different folders = Different branches = NO STASHING! 🎉
-
-✨ The Magic:
-   git worktree add ../my-feature feature-branch
-   cd ../my-feature  # ← You're on feature-branch
-   cd ../main-repo   # ← Still on main! 🤯
-
-🚀 Perfect for:
-   • Reviewing PRs while coding your feature
-   • Lightning-fast hotfixes (no context switching!)
-   • Testing different versions side-by-side
-   • Working on multiple features simultaneously
-
-⚡ Quick Start:
-   1. git worktree add ../hotfix hotfix-branch
-   2. cd ../hotfix → Fix the bug → Commit & push
-   3. cd back → Your feature work is UNTOUCHED! ✨
+gw   → switch git worktrees (NEW!)
 
 🚀 POWER COMMANDS
 ginit         → Initialize repo with .gitignore
@@ -558,16 +545,12 @@ git stash     → Save work temporarily
 git reflog    → Undo ANYTHING
 
 💡 WORKFLOW TIPS
-1. 🎯 Use lazygit for everything visual!
-2. ⚡ Press Ctrl+G for lightning-quick git status
-3. 🌳 Use worktrees = never stash again!
-4. 🔀 Type 'gw' to switch worktrees with style
-5. 🎨 Combine: lazygit in each worktree = god mode!"
+1. Use lazygit for everything!
+2. Press Ctrl+G for quick status
+3. Use 'gw' for worktree switching"
     
     echo ""
-    if gum confirm "Want to learn about worktrees?"; then
-        show_worktree_tutorial
-    elif gum confirm "Open lazygit tutorial?"; then
+    if gum confirm "Open lazygit tutorial?"; then
         tutorial_lazygit
     fi
 }
@@ -613,91 +596,119 @@ x      → Open menu
     fi
 }
 
-# Add this new function for worktree tutorial
-show_worktree_tutorial() {
-    clear
-    gum style \
-        --border rounded \
-        --border-foreground 214 \
-        --padding "1 2" \
-        "🌳 GIT WORKTREES MASTERY COURSE
-
-😤 THE PAIN:
-You: *deep in flow state coding epic feature*
-Boss: "DROP EVERYTHING! FIX THIS CRITICAL BUG NOW!"
-Old you: stash → switch → fix → switch → unstash → "what was I doing?" 😫
-
-🎉 THE MAGIC: WORKTREES!
-New you: cd ../hotfix → fix → cd back → *still in flow state* ✨
-
-📚 LESSON 1: Create Your First Worktree"
+# Enhanced show_something_cool with more options
+show_something_cool() {
+    COOL=$(gum choose \
+        "🎬 Matrix + Clock + System Split Screen" \
+        "🎨 Custom ASCII Art Banner" \
+        "🌈 Rainbow Terminal Party" \
+        "📊 System Stats Dashboard" \
+        "🎵 Music Visualizer" \
+        "🌤️ Weather + Moon Phase" \
+        "🎲 Terminal Game" \
+        "💰 Crypto Prices" \
+        "🦜 Parrot Party")
     
+    case "$COOL" in
+        "🎬 Matrix + Clock + System Split Screen")
+            # Try to use tmux for split screen effect
+            if command -v tmux >/dev/null; then
+                tmux new-session \; \
+                    split-window -h \; \
+                    split-window -v \; \
+                    send-keys 'cmatrix -b' C-m \; \
+                    select-pane -t 0 \; \
+                    send-keys 'btop' C-m \; \
+                    select-pane -t 2 \; \
+                    send-keys 'tty-clock -c -C 4' C-m
+            else
+                echo "Install tmux for the full effect!"
+                cmatrix -b
+            fi
+            ;;
+        "🎨 Custom ASCII Art Banner")
+            NAME=$(gum input --placeholder "Enter your name..." --value "PABLO")
+            echo "$NAME" | figlet -f slant | lolcat
+            echo "is" | figlet -f small | lolcat
+            echo "AWESOME" | figlet -f big | lolcat
+            ;;
+        "🌈 Rainbow Terminal Party")
+            echo "🎉 PARTY MODE ACTIVATED 🎉" | figlet | lolcat
+            fortune | ponysay | lolcat
+            echo ""
+            echo "Press Ctrl+C to stop the party..."
+            while true; do
+                echo "🎉 🎈 🎊 🎆 🎇 ✨ 🎉 🎈 🎊 🎆 🎇 ✨" | lolcat
+                sleep 0.1
+            done
+            ;;
+        "📊 System Stats Dashboard")
+            clear
+            neofetch
+            echo ""
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" | lolcat
+            echo "Disk Usage:" | lolcat
+            duf
+            echo ""
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" | lolcat
+            echo "Network:" | lolcat
+            echo "Public IP: $(curl -s ifconfig.me)"
+            echo "Local IP: $(ipconfig getifaddr en0)"
+            ;;
+        "🎵 Music Visualizer")
+            echo "🎵 Make sure music is playing! 🎵" | figlet -f small | lolcat
+            cava
+            ;;
+        "🌤️ Weather + Moon Phase")
+            weather
+            echo ""
+            curl -s wttr.in/Moon
+            ;;
+        "🎲 Terminal Game")
+            echo "Let's play a game!" | cowsay | lolcat
+            echo ""
+            GAME=$(gum choose "🎯 Guess the number" "🎮 ASCII Invaders" "🏃 Run from the train")
+            case "$GAME" in
+                "🎯 Guess the number")
+                    NUMBER=$((RANDOM % 100 + 1))
+                    TRIES=0
+                    echo "I'm thinking of a number between 1 and 100..."
+                    while true; do
+                        GUESS=$(gum input --placeholder "Your guess...")
+                        ((TRIES++))
+                        if [[ $GUESS -eq $NUMBER ]]; then
+                            echo "🎉 Correct! It took you $TRIES tries!" | lolcat
+                            break
+                        elif [[ $GUESS -lt $NUMBER ]]; then
+                            echo "📈 Higher!"
+                        else
+                            echo "📉 Lower!"
+                        fi
+                    done
+                    ;;
+                "🎮 ASCII Invaders")
+                    echo "Coming soon! For now, try: brew install ninvaders"
+                    ;;
+                "🏃 Run from the train")
+                    sl
+                    ;;
+            esac
+            ;;
+        "💰 Crypto Prices")
+            echo "💰 CRYPTO PRICES 💰" | figlet -f small | lolcat
+            curl -s rate.sx/btc
+            echo ""
+            curl -s rate.sx/eth
+            ;;
+        "🦜 Parrot Party")
+            curl parrot.live
+            ;;
+    esac
     echo ""
-    gum confirm "Ready to create your first worktree?" && {
-        echo -e "${PURPLE}✨ In your main repo, cast this spell:${NC}"
-        echo -e "${YELLOW}$ git worktree add ../hotfix-login hotfix/login-bug${NC}"
-        echo ""
-        echo -e "${GREEN}🎯 BOOM! This creates:${NC}"
-        echo "   📁 New folder '../hotfix-login'"
-        echo "   🌿 With 'hotfix/login-bug' branch checked out"
-        echo "   🚀 Ready to work immediately!"
-        echo ""
-        gum input --placeholder "Press enter to see the workflow magic..."
-    }
-    
-    gum style \
-        --border rounded \
-        --border-foreground 214 \
-        --padding "1 2" \
-        "📚 LESSON 2: The Worktree Workflow Dance 💃
-
-${CYAN}Terminal 1:${NC}
-$ cd ../hotfix-login    # 🐛 Bug fixing mode
-$ # Fix the critical bug...
-$ git commit -m '🚑 Fix login crash'
-$ git push              # 🎉 Bug fixed!
-
-${PURPLE}Terminal 2:${NC}
-$ cd ../main-repo       # 🚀 Feature building mode
-$ # Your feature work is COMPLETELY untouched!
-$ # Continue where you left off... ✨
-
-🎊 NO STASHING! NO BRANCH SWITCHING! NO LOST CONTEXT!
-Just pure, uninterrupted developer bliss! 🧘‍♂️"
-    
-    echo ""
-    gum style \
-        --border rounded \
-        --border-foreground 214 \
-        --padding "1 2" \
-        "📚 LESSON 3: Master Your Worktree Kingdom 👑
-
-🔍 List your empire:
-$ git worktree list
-
-⚡ Switch like a ninja:
-$ gw    # Fuzzy find + instant teleport! 🥷
-
-🧹 Cleanup when done:
-$ git worktree remove ../hotfix-login
-
-🏰 PRO SETUP (Pablo's Secret):
-I keep 3 permanent worktrees:
-   🌿 main/     → pristine main branch
-   ✨ feature/  → current epic feature
-   🚑 hotfix/   → emergency response team
-
-💡 Result: I NEVER stash. I NEVER lose context.
-   I'm basically a git wizard now. 🧙‍♂️✨"
-    
-    echo ""
-    if [ -d .git ]; then
-        echo "Your current worktrees:"
-        git worktree list
-    fi
-    
-    gum input --placeholder "🧙‍♂️ You're now a worktree wizard! Ready to rule your git kingdom? Press enter..."
+    gum input --placeholder "Press enter to continue..."
 }
+
+
 
 # Enhanced fun commands with more demos
 show_fun_commands() {
@@ -864,6 +875,192 @@ Your font     → JetBrains Mono"
         echo "It's your instant terminal from anywhere!"
         gum input --placeholder "Press enter when you've tried it..."
     fi
+}
+
+# Svelte Development Section
+show_svelte_dev() {
+    gum style \
+        --border double \
+        --border-foreground 214 \
+        --padding "1 2" \
+        --margin "1" \
+        "🚀 SVELTE DEVELOPMENT COMMANDS
+
+📦 PROJECT STARTERS
+sv        → Create Vite + Svelte app
+svkit     → Create SvelteKit app
+sva       → Svelte adders (Tailwind, etc)
+
+⚡ DEVELOPMENT SHORTCUTS
+dev       → npm run dev
+build     → npm run build
+preview   → npm run preview
+check     → npm run check
+format    → Format with prettier
+lint      → Run ESLint
+
+🛠️ PNPM COMMANDS (Faster npm!)
+pn        → pnpm
+pni       → pnpm install
+pnd       → pnpm dev
+pnb       → pnpm build
+
+🎯 CUSTOM FUNCTIONS
+mkcomp    → Create Svelte component
+          Usage: mkcomp Button
+          Creates: src/lib/components/Button/Button.svelte
+
+servethis → Quick static server
+openproject → Open browser at dev URL
+
+📁 PROJECT STRUCTURE
+src/
+├── lib/          # Reusable components
+├── routes/       # SvelteKit pages
+├── app.html      # HTML template
+└── app.css       # Global styles
+
+💡 WORKFLOW TIPS
+1. Use 'sv' to start new project
+2. Always use pnpm (faster!)
+3. Press Cmd+\` for quick terminal
+4. Use lazygit for version control"
+    
+    echo ""
+    if gum confirm "Create a sample Svelte component?"; then
+        COMP_NAME=$(gum input --placeholder "Component name (e.g., Button)...")
+        if [ -n "$COMP_NAME" ]; then
+            echo "Would create: src/lib/components/$COMP_NAME/$COMP_NAME.svelte"
+            echo "With props, styles, and TypeScript ready!"
+        fi
+    fi
+}
+
+# Dotfiles Management Section
+show_dotfiles_management() {
+    gum style \
+        --border double \
+        --border-foreground 99 \
+        --padding "1 2" \
+        --margin "1" \
+        "📦 DOTFILES MANAGEMENT
+
+📂 YOUR SETUP
+Location: ~/dotfiles
+GitHub: github.com/pibulus/dotfiles
+Install: ./install.sh
+
+🔄 UPDATING DOTFILES
+1. Edit any config file
+2. cd ~/dotfiles
+3. git add .
+4. git commit -m 'Update X'
+5. git push
+
+📝 KEY FILES
+.zshrc              → Shell config
+.gitconfig          → Git settings
+.config/starship.toml → Prompt
+.config/ghostty/    → Terminal
+Brewfile            → All your tools
+bin/cheat           → This menu!
+
+🆕 ADDING NEW TOOLS
+1. brew install toolname
+2. brew bundle dump --force
+3. Commit updated Brewfile
+
+🔧 TESTING ON NEW MACHINE
+git clone https://github.com/pibulus/dotfiles ~/dotfiles
+cd ~/dotfiles
+./install.sh
+
+💡 QUICK EDITS
+zshrc     → Edit shell config
+reload    → Reload shell
+ghosttyconf → Edit terminal
+
+⚠️ REMEMBER
+- Commit often
+- Write good commit messages
+- Update README when adding features"
+    
+    echo ""
+    if gum confirm "Check dotfiles status?"; then
+        cd ~/dotfiles
+        echo -e "${GREEN}Git Status:${NC}"
+        git status --short
+        echo -e "\n${GREEN}Last 5 commits:${NC}"
+        git log --oneline -5
+        cd - > /dev/null
+    fi
+}
+
+# Test Setup Function
+test_setup() {
+    clear
+    echo -e "${CYAN}"
+    figlet "Setup Test" | lolcat
+    echo -e "${NC}"
+    
+    echo "🧪 Testing Pablo's Terminal Setup..."
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    
+    # Test essential commands
+    echo -e "\n${YELLOW}Essential Tools:${NC}"
+    command -v brew >/dev/null && echo "✅ Homebrew" || echo "❌ Homebrew"
+    command -v git >/dev/null && echo "✅ Git" || echo "❌ Git"
+    command -v zsh >/dev/null && echo "✅ Zsh" || echo "❌ Zsh"
+    
+    # Test modern CLI tools
+    echo -e "\n${YELLOW}Modern CLI Tools:${NC}"
+    command -v bat >/dev/null && echo "✅ bat (better cat)" || echo "❌ bat"
+    command -v eza >/dev/null && echo "✅ eza (better ls)" || echo "❌ eza"
+    command -v fd >/dev/null && echo "✅ fd (better find)" || echo "❌ fd"
+    command -v rg >/dev/null && echo "✅ ripgrep (better grep)" || echo "❌ ripgrep"
+    command -v fzf >/dev/null && echo "✅ fzf (fuzzy finder)" || echo "❌ fzf"
+    command -v zoxide >/dev/null && echo "✅ zoxide (smart cd)" || echo "❌ zoxide"
+    command -v btop >/dev/null && echo "✅ btop (system monitor)" || echo "❌ btop"
+    command -v lazygit >/dev/null && echo "✅ lazygit" || echo "❌ lazygit"
+    command -v delta >/dev/null && echo "✅ delta (git diffs)" || echo "❌ delta"
+    
+    # Test development tools
+    echo -e "\n${YELLOW}Development Tools:${NC}"
+    command -v node >/dev/null && echo "✅ Node.js $(node --version)" || echo "❌ Node.js"
+    command -v pnpm >/dev/null && echo "✅ pnpm" || echo "❌ pnpm"
+    command -v code >/dev/null && echo "✅ VS Code" || echo "❌ VS Code"
+    
+    # Test fun tools
+    echo -e "\n${YELLOW}Fun Tools:${NC}"
+    command -v cmatrix >/dev/null && echo "✅ cmatrix" || echo "❌ cmatrix"
+    command -v asciiquarium >/dev/null && echo "✅ asciiquarium" || echo "❌ asciiquarium"
+    command -v figlet >/dev/null && echo "✅ figlet" || echo "❌ figlet"
+    command -v lolcat >/dev/null && echo "✅ lolcat" || echo "❌ lolcat"
+    
+    # Test configs
+    echo -e "\n${YELLOW}Configuration Files:${NC}"
+    [ -f ~/.zshrc ] && echo "✅ .zshrc" || echo "❌ .zshrc"
+    [ -f ~/.gitconfig ] && echo "✅ .gitconfig" || echo "❌ .gitconfig"
+    [ -f ~/.config/starship.toml ] && echo "✅ Starship config" || echo "❌ Starship"
+    [ -f "$HOME/Library/Application Support/com.mitchellh.ghostty/config" ] && echo "✅ Ghostty config" || echo "❌ Ghostty"
+    
+    # Test custom commands
+    echo -e "\n${YELLOW}Custom Commands:${NC}"
+    command -v cheat >/dev/null && echo "✅ cheat menu" || echo "❌ cheat menu"
+    type mkcd >/dev/null 2>&1 && echo "✅ mkcd function" || echo "❌ mkcd"
+    type z >/dev/null 2>&1 && echo "✅ z (zoxide)" || echo "❌ z"
+    
+    echo -e "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    
+    # Count results
+    TOTAL=$(( $(echo -e "$output" | grep -c "✅") + $(echo -e "$output" | grep -c "❌") ))
+    PASSED=$(echo -e "$output" | grep -c "✅")
+    
+    echo -e "${GREEN}Setup Status: Excellent!${NC}"
+    echo "Most tools are installed and configured."
+    
+    echo ""
+    gum input --placeholder "Press enter to continue..."
 }
 
 # Start with welcome if first run
