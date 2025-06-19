@@ -2,6 +2,21 @@
 # Pablo's Ultimate Interactive Terminal Cheatsheet
 # Save this as ~/bin/cheat and chmod +x it
 
+# Check if we're in an interactive environment
+check_interactive() {
+    if [[ ! -t 0 || ! -t 1 ]]; then
+        return 1  # Not interactive
+    fi
+    if ! command -v gum >/dev/null 2>&1; then
+        return 1  # gum not available
+    fi
+    # Test if gum can actually work
+    if ! gum --help >/dev/null 2>&1; then
+        return 1  # gum not functional
+    fi
+    return 0  # Interactive and gum works
+}
+
 # Colors
 CYAN='\033[0;36m'
 YELLOW='\033[1;33m'
@@ -14,12 +29,41 @@ NC='\033[0m' # No Color
 # Track if user is new
 FIRST_RUN_FILE="$HOME/.cheat_welcomed"
 
+# Fallback menu for non-interactive environments
+show_fallback_menu() {
+    echo "🎯 PABLO'S TERMINAL CHEATSHEET"
+    echo "=============================="
+    echo ""
+    echo "Available commands:"
+    echo "  cheat help       - Show this menu"
+    echo "  cheat ghostty    - Ghostty shortcuts"
+    echo "  cheat git        - Git commands"
+    echo "  cheat modern     - Modern CLI tools"
+    echo "  cheat functions  - Custom functions"
+    echo "  cheat svelte     - Svelte development"
+    echo "  cheat test       - Test setup"
+    echo ""
+    echo "For full interactive experience:"
+    echo "  1. Install gum: brew install gum"
+    echo "  2. Run from a proper terminal (not IDE)"
+    echo "  3. Ensure TTY is available"
+}
+
 # Welcome screen for first run
 show_welcome() {
     if [ ! -f "$FIRST_RUN_FILE" ]; then
+        if ! check_interactive; then
+            show_fallback_menu
+            return
+        fi
+        
         clear
         echo -e "${CYAN}"
-        figlet "Welcome!" | lolcat
+        if command -v figlet >/dev/null && command -v lolcat >/dev/null; then
+            figlet "Welcome!" | lolcat
+        else
+            echo "Welcome to your Terminal Superpower Guide!"
+        fi
         echo -e "${NC}"
         
         gum style \
@@ -71,9 +115,52 @@ show_quick_tour() {
 
 # Main menu function
 show_menu() {
+    # Handle command line arguments for fallback mode
+    if [[ $# -gt 0 ]]; then
+        case "$1" in
+            "help"|"--help"|"")
+                show_fallback_menu
+                return
+                ;;
+            "ghostty")
+                show_ghostty_shortcuts_text
+                return
+                ;;
+            "git")
+                show_git_commands_text
+                return
+                ;;
+            "modern")
+                show_modern_tools_text
+                return
+                ;;
+            "functions")
+                show_functions_aliases_text
+                return
+                ;;
+            "svelte")
+                show_svelte_dev_text
+                return
+                ;;
+            "test")
+                test_setup_text
+                return
+                ;;
+        esac
+    fi
+    
+    if ! check_interactive; then
+        show_fallback_menu
+        return
+    fi
+    
     clear
     echo -e "${CYAN}"
-    figlet "Cheat Menu" | lolcat
+    if command -v figlet >/dev/null && command -v lolcat >/dev/null; then
+        figlet "Cheat Menu" | lolcat
+    else
+        echo "=== CHEAT MENU ==="
+    fi
     echo -e "${NC}"
     
     CHOICE=$(gum choose \
@@ -423,11 +510,15 @@ Just type:  z down"
     zoxide query -l | head -10
     
     echo ""
-    gum confirm "Want to see interactive mode?" && {
-        echo "Type 'zi' for interactive selection:"
-        echo "(Press Ctrl+C if you want to cancel)"
-        zi
-    }
+    if command -v zi >/dev/null 2>&1; then
+        gum confirm "Want to see interactive mode?" && {
+            echo "Type 'zi' for interactive selection:"
+            echo "(Press Ctrl+C if you want to cancel)"
+            zi
+        }
+    else
+        echo "Interactive mode requires zoxide to be properly configured"
+    fi
     
     gum style \
         --border rounded \
@@ -652,8 +743,8 @@ show_something_cool() {
             echo ""
             echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" | lolcat
             echo "Network:" | lolcat
-            echo "Public IP: $(curl -s ifconfig.me)"
-            echo "Local IP: $(ipconfig getifaddr en0)"
+            echo "Public IP: $(curl -s --connect-timeout 5 --max-time 10 ifconfig.me 2>/dev/null || echo 'unavailable')"
+            echo "Local IP: $(ipconfig getifaddr en0 2>/dev/null || echo 'unavailable')"
             ;;
         "🎵 Music Visualizer")
             echo "🎵 Make sure music is playing! 🎵" | figlet -f small | lolcat
@@ -662,7 +753,7 @@ show_something_cool() {
         "🌤️ Weather + Moon Phase")
             weather
             echo ""
-            curl -s wttr.in/Moon
+            curl -s --connect-timeout 5 --max-time 10 wttr.in/Moon 2>/dev/null || echo "Moon phase service unavailable"
             ;;
         "🎲 Terminal Game")
             echo "Let's play a game!" | cowsay | lolcat
@@ -695,13 +786,17 @@ show_something_cool() {
             esac
             ;;
         "💰 Crypto Prices")
-            echo "💰 CRYPTO PRICES 💰" | figlet -f small | lolcat
-            curl -s rate.sx/btc
+            if command -v figlet >/dev/null && command -v lolcat >/dev/null; then
+                echo "💰 CRYPTO PRICES 💰" | figlet -f small | lolcat
+            else
+                echo "💰 CRYPTO PRICES 💰"
+            fi
+            curl -s --connect-timeout 5 --max-time 10 rate.sx/btc 2>/dev/null || echo "Bitcoin price unavailable"
             echo ""
-            curl -s rate.sx/eth
+            curl -s --connect-timeout 5 --max-time 10 rate.sx/eth 2>/dev/null || echo "Ethereum price unavailable"
             ;;
         "🦜 Parrot Party")
-            curl parrot.live
+            curl --connect-timeout 5 --max-time 15 parrot.live 2>/dev/null || echo "🦜 Parrot party is taking a break!"
             ;;
     esac
     echo ""
@@ -1063,8 +1158,416 @@ test_setup() {
     gum input --placeholder "Press enter to continue..."
 }
 
+# Handle command line arguments
+if [[ $# -gt 0 ]]; then
+    show_menu "$@"
+    exit 0
+fi
+
 # Start with welcome if first run
 show_welcome
+
+# Text-only versions for fallback mode
+show_ghostty_shortcuts_text() {
+    echo "🎮 GHOSTTY SHORTCUTS"
+    echo "===================="
+    echo ""
+    echo "🚀 QUICK TERMINAL"
+    echo "Cmd+\`         → Toggle quick terminal (ANYWHERE!)"
+    echo ""
+    echo "📐 SPLITS & TABS"
+    echo "Cmd+D         → Split right"
+    echo "Cmd+Shift+D   → Split down"
+    echo "Cmd+T         → New tab"
+    echo "Cmd+W         → Close current"
+    echo ""
+    echo "🎯 NAVIGATION"
+    echo "Cmd+←/→/↑/↓   → Navigate splits"
+    echo "Cmd+H/J/K/L   → Navigate (vim style)"
+}
+
+show_git_commands_text() {
+    echo "🔥 GIT COMMANDS"
+    echo "==============="
+    echo ""
+    echo "🎯 VISUAL TOOLS"
+    echo "lazygit       → Full git UI (BEST!)"
+    echo ""
+    echo "⚡ YOUR SHORTCUTS"
+    echo "gs   → git status        gp   → git push"
+    echo "ga   → git add          gpl  → git pull"
+    echo "gaa  → git add .        gco  → git checkout"
+    echo "gc   → git commit       gb   → git branch"
+    echo "gcm  → git commit -m    glog → pretty git log"
+}
+
+show_modern_tools_text() {
+    echo "🌟 MODERN CLI REPLACEMENTS"
+    echo "=========================="
+    echo ""
+    echo "OLD → NEW"
+    echo "cat   → bat      (syntax highlighting!)"
+    echo "ls    → eza      (icons + git status!)"
+    echo "find  → fd       (5x faster!)"
+    echo "grep  → rg       (ripgrep - blazing fast!)"
+    echo "cd    → z        (smart jumps!)"
+    echo "top   → btop     (beautiful graphs!)"
+}
+
+show_functions_aliases_text() {
+    echo "📝 CUSTOM FUNCTIONS & ALIASES"
+    echo "============================="
+    echo ""
+    echo "🚀 QUICK SHORTCUTS"
+    echo "reload    → Reload your terminal config"
+    echo "zshrc     → Edit your .zshrc"
+    echo "mkcd      → Make directory AND enter it"
+    echo "backup    → Backup file with timestamp"
+    echo "extract   → Extract ANY archive type"
+    echo "ginit     → Start git repo with .gitignore"
+}
+
+show_svelte_dev_text() {
+    echo "🚀 SVELTE DEVELOPMENT"
+    echo "===================="
+    echo ""
+    echo "📦 PROJECT STARTERS"
+    echo "sv        → Create Vite + Svelte app"
+    echo "svkit     → Create SvelteKit app"
+    echo ""
+    echo "⚡ DEVELOPMENT SHORTCUTS"
+    echo "dev       → npm run dev"
+    echo "build     → npm run build"
+    echo "preview   → npm run preview"
+}
+
+test_setup_text() {
+    echo "🧪 TESTING SETUP"
+    echo "================"
+    echo ""
+    echo "Essential Tools:"
+    command -v brew >/dev/null && echo "✅ Homebrew" || echo "❌ Homebrew"
+    command -v git >/dev/null && echo "✅ Git" || echo "❌ Git"
+    command -v zsh >/dev/null && echo "✅ Zsh" || echo "❌ Zsh"
+    echo ""
+    echo "Modern CLI Tools:"
+    command -v bat >/dev/null && echo "✅ bat" || echo "❌ bat"
+    command -v eza >/dev/null && echo "✅ eza" || echo "❌ eza"
+    command -v fzf >/dev/null && echo "✅ fzf" || echo "❌ fzf"
+    command -v lazygit >/dev/null && echo "✅ lazygit" || echo "❌ lazygit"
+}
+
+# Missing functions that were referenced in menu
+show_tmux_commands() {
+    if ! check_interactive; then
+        echo "🎹 TMUX-STYLE COMMANDS"
+        echo "======================"
+        echo "Note: This is a placeholder. Ghostty doesn't use tmux-style commands."
+        echo "Use Ghostty shortcuts instead (run: cheat ghostty)"
+        return
+    fi
+    
+    gum style \
+        --border double \
+        --border-foreground 214 \
+        --padding "1 2" \
+        --margin "1" \
+        "🎹 TMUX-STYLE COMMANDS
+        
+Note: Ghostty doesn't use tmux-style commands.
+Instead, it has built-in split and tab management.
+
+Use these Ghostty shortcuts:
+Cmd+D         → Split right
+Cmd+Shift+D   → Split down
+Cmd+T         → New tab
+Cmd+W         → Close current
+
+For traditional tmux, install with: brew install tmux"
+}
+
+show_file_navigation() {
+    if ! check_interactive; then
+        echo "📁 FILE NAVIGATION"
+        echo "=================="
+        echo "z <folder>   → Jump to any folder (zoxide)"
+        echo "..           → Go up one directory"
+        echo "...          → Go up two directories"
+        echo "Ctrl+T       → Find files with fzf"
+        echo "Ctrl+F       → Find and edit files"
+        return
+    fi
+    
+    gum style \
+        --border double \
+        --border-foreground 87 \
+        --padding "1 2" \
+        --margin "1" \
+        "📁 FILE NAVIGATION MASTERY
+
+🚀 SMART NAVIGATION
+z <folder>    → Jump to any folder instantly
+zi            → Interactive directory picker
+..            → Go up one directory
+...           → Go up two directories
+-             → Go back to previous directory
+
+🔍 FINDING FILES
+Ctrl+T        → Find files with preview
+Ctrl+F        → Find and edit files
+fd <pattern>  → Fast file search
+find . -name  → Traditional search
+
+📂 DIRECTORY OPERATIONS
+mkcd <name>   → Create and enter directory
+ls / eza      → List with icons and git status
+tree / lt     → Show directory tree
+
+💡 PRO TIPS
+• Use 'z' instead of 'cd' - it learns your habits!
+• Press Tab for auto-completion
+• Use wildcards: *.txt, **/*.js"
+}
+
+show_system_tools() {
+    if ! check_interactive; then
+        echo "🛠️ SYSTEM MONITORING"
+        echo "===================="
+        echo "btop         → Beautiful system monitor"
+        echo "duf          → Disk usage (better df)"
+        echo "dust         → Directory usage (better du)"
+        echo "procs        → Process viewer (better ps)"
+        return
+    fi
+    
+    gum style \
+        --border double \
+        --border-foreground 208 \
+        --padding "1 2" \
+        --margin "1" \
+        "🛠️ SYSTEM MONITORING & TOOLS
+
+📊 SYSTEM MONITORING
+btop          → Beautiful system monitor (best!)
+top/htop      → Falls back to btop
+activity monitor → macOS built-in
+
+💾 DISK & STORAGE
+duf           → Disk usage (colorful df)
+dust          → Directory usage (visual du)
+ncdu          → Interactive disk usage
+
+🔍 PROCESS MANAGEMENT
+procs         → Modern process viewer
+ps aux        → Traditional process list
+Ctrl+P        → Interactive process killer
+
+🌐 NETWORK TOOLS
+ports         → Show listening ports
+myip          → Your public IP
+localip       → Your local IP
+ping/gping    → Network connectivity
+
+⚡ PERFORMANCE
+bench <cmd>   → Benchmark any command
+time <cmd>    → Time command execution"
+}
+
+show_image_tools() {
+    if ! check_interactive; then
+        echo "🖼️ IMAGE & MEDIA TOOLS"
+        echo "====================="
+        echo "Note: Install additional tools with brew"
+        echo "brew install imagemagick ffmpeg"
+        return
+    fi
+    
+    gum style \
+        --border double \
+        --border-foreground 205 \
+        --padding "1 2" \
+        --margin "1" \
+        "🖼️ IMAGE & MEDIA TOOLS
+
+📸 IMAGE PROCESSING
+convert       → ImageMagick (install: brew install imagemagick)
+sips          → macOS built-in image tool
+preview       → Open in Preview app
+
+🎵 AUDIO/VIDEO
+ffmpeg        → Swiss army knife (install: brew install ffmpeg)
+cava          → Audio visualizer
+play          → Audio playback
+
+📱 SCREENSHOTS
+screencapture → macOS built-in
+Cmd+Shift+3   → Full screen screenshot
+Cmd+Shift+4   → Select area screenshot
+Cmd+Shift+5   → Screenshot options
+
+🎨 FUN VISUAL
+neofetch      → System info with logo
+asciiquarium  → Terminal aquarium
+cmatrix       → Matrix rain effect
+
+💡 INSTALL MORE TOOLS
+brew install imagemagick ffmpeg youtube-dl
+brew install --cask vlc handbrake"
+}
+
+show_terminal_shortcuts() {
+    if ! check_interactive; then
+        echo "⌨️ TERMINAL SHORTCUTS"
+        echo "===================="
+        echo "Ctrl+C       → Cancel current command"
+        echo "Ctrl+D       → Exit/logout"
+        echo "Ctrl+L       → Clear screen"
+        echo "Ctrl+R       → Search history"
+        echo "Ctrl+A       → Beginning of line"
+        echo "Ctrl+E       → End of line"
+        return
+    fi
+    
+    gum style \
+        --border double \
+        --border-foreground 99 \
+        --padding "1 2" \
+        --margin "1" \
+        "⌨️ TERMINAL SHORTCUTS & KEYBINDINGS
+
+🎯 CURSOR MOVEMENT
+Ctrl+A        → Beginning of line
+Ctrl+E        → End of line
+Alt+F         → Forward one word
+Alt+B         → Back one word
+
+✂️ EDITING
+Ctrl+U        → Delete to beginning
+Ctrl+K        → Delete to end
+Ctrl+W        → Delete word backward
+Alt+D         → Delete word forward
+
+📝 CONTROL
+Ctrl+C        → Cancel command
+Ctrl+D        → Exit/logout
+Ctrl+Z        → Suspend process
+Ctrl+L        → Clear screen
+
+🔍 HISTORY
+Ctrl+R        → Search history (fuzzy!)
+↑/↓           → Navigate history with context
+!!            → Repeat last command
+!<text>       → Run last command starting with text
+
+⚡ CUSTOM SHORTCUTS (Your Setup)
+Ctrl+F        → Find and edit files
+Ctrl+G        → Interactive git status
+Ctrl+P        → Process manager
+Ctrl+T        → Find files
+Alt+C         → Change directory
+Alt+D         → Directory jumper (zi)"
+}
+
+search_cheatsheet() {
+    if ! check_interactive; then
+        echo "Enter search term: "
+        read -r term
+        if [ -f ~/terminal-cheatsheet.md ]; then
+            grep -i "$term" ~/terminal-cheatsheet.md
+        else
+            echo "Cheatsheet not found at ~/terminal-cheatsheet.md"
+        fi
+        return
+    fi
+    
+    PATTERN=$(gum input --placeholder "Search term...")
+    if [ -n "$PATTERN" ]; then
+        echo "Searching cheatsheet for '$PATTERN'..."
+        if [ -f ~/terminal-cheatsheet.md ]; then
+            grep -i "$PATTERN" ~/terminal-cheatsheet.md --color=always | head -20
+        else
+            echo "Cheatsheet not found. Create ~/terminal-cheatsheet.md first!"
+        fi
+    fi
+}
+
+tutorial_eza() {
+    if ! check_interactive; then
+        echo "📁 EZA TUTORIAL"
+        echo "=============="
+        echo "eza --icons           → List with icons"
+        echo "eza -la --git         → Long format with git status"
+        echo "eza --tree --level=2  → Tree view"
+        return
+    fi
+    
+    clear
+    gum style \
+        --border rounded \
+        --border-foreground 87 \
+        --padding "1 2" \
+        "🎨 EZA MASTERY - BEAUTIFUL FILE LISTING
+
+Eza is your modern replacement for ls!
+
+BASIC USAGE:
+eza           → Simple listing
+eza --icons   → With beautiful icons
+eza -la       → Long format with all files
+eza --git     → Show git status
+
+TREE MODE:
+eza --tree    → Show as tree
+eza --tree --level=2 → Limit depth
+lt            → Your alias for tree view
+
+ADVANCED:
+eza -la --git --icons --group-directories-first
+eza --sort=modified --reverse
+eza --only-dirs   → Only directories"
+    
+    echo ""
+    gum confirm "Want to see a demo?" && {
+        echo "Current directory with eza:"
+        eza --icons --git -la | head -10
+    }
+}
+
+tutorial_navigation() {
+    if ! check_interactive; then
+        echo "⚡ NAVIGATION TUTORIAL"
+        echo "===================="
+        echo "Use z, .., fzf, and custom shortcuts for faster navigation"
+        return
+    fi
+    
+    clear
+    gum style \
+        --border rounded \
+        --border-foreground 214 \
+        --padding "1 2" \
+        "⚡ MASTER TERMINAL NAVIGATION
+
+LESSON 1: Smart Directory Jumping
+z <partial>   → Jump to any visited directory
+zi            → Interactive picker
+z -           → Go back
+
+LESSON 2: Quick Navigation
+..    → Up one level
+...   → Up two levels
+-     → Previous directory
+~     → Home directory
+
+LESSON 3: Finding & Moving
+Ctrl+T → Find files, then navigate to folder
+Alt+C  → Change directory with fzf
+fd -t d | fzf → Find directories
+
+LESSON 4: Bookmarks (with zoxide)
+Your most visited directories are automatically tracked!
+Type 'z' followed by any part of a folder name."
+}
 
 # Start the menu
 show_menu
